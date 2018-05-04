@@ -4,6 +4,7 @@
  */
 package com.example.quinatzin.booklisting;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,6 +12,8 @@ public class Books implements Parcelable {
 
     public String author;
     public String title;
+    //public String image;
+    public Bitmap bitmap;
 
     /**
      * Default constructor
@@ -18,9 +21,16 @@ public class Books implements Parcelable {
      * @param author
      * @param title
      */
-    public Books(String author, String title) {
+   /* public Books(String author, String title) {
         this.author = author;
         this.title = title;
+    }
+    */
+    public Books(String author, String title, Bitmap image) {
+        this.author = author;
+        this.title = title;
+        //this.image = image;
+        this.bitmap = image;
     }
 
     /**
@@ -32,6 +42,7 @@ public class Books implements Parcelable {
     protected Books(Parcel in) {
         author = in.readString();
         title = in.readString();
+        //image = in.readString();
     }
 
     /**
@@ -63,6 +74,14 @@ public class Books implements Parcelable {
         return title;
     }
 
+    /* public String getImage(){
+         return image;
+     }
+     */
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
     /**
      * @return amount of content
      */
@@ -82,6 +101,6 @@ public class Books implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(author);
         parcel.writeString(title);
-
+        //parcel.writeString(image);
     }
 }
