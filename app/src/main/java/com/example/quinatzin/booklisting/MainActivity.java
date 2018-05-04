@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import static android.view.View.GONE;
+
 public class MainActivity extends AppCompatActivity {
 
     static final String SEARCH = "booksSearchResults";
@@ -37,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton searchButton;
     private ListView listView;
     private TextView textView;
+    //private ImageView imageDisplay;
+
     CustomAdapter adapter;
 
     @Override
@@ -48,10 +53,14 @@ public class MainActivity extends AppCompatActivity {
         searchBooks = findViewById(R.id.editText_id);
         searchButton = findViewById(R.id.imageButton);
         textView = findViewById(R.id.textView_id);
+        //imageDisplay = findViewById(R.id.image_viewID);
 
         // create a new adapter
         adapter = new CustomAdapter(this, -1);
 
+        if(adapter != null){
+            textView.setVisibility(GONE);
+        }
         //set listView to new adapter
         listView = findViewById(R.id.listView_id);
         listView.setAdapter(adapter);
@@ -103,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
             textView.setVisibility(View.VISIBLE);
         } else {
             // if List is not empty hide textView
-            textView.setVisibility(View.GONE);
+            textView.setVisibility(GONE);
         }
 
         // clear adapter
@@ -310,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < books.length; i++) {
             books[i] = adapter.getItem(i);
         }
-        outState.putParcelableArray(SEARCH, (Parcelable[]) books);
+        outState.putParcelableArray(SEARCH, books);
     }
 
 }
