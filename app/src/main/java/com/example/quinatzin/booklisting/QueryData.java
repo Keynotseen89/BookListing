@@ -4,10 +4,17 @@
  */
 package com.example.quinatzin.booklisting;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,12 +88,39 @@ public class QueryData {
                 JSONArray authorsArray = bookInfo.getJSONArray("authors");
                 String authors = formatList(authorsArray);
 
-                Books book = new Books(authors, title);
+                JSONObject imageObject = bookInfo.getJSONObject("imageLinks");
+                String imageDisplay = imageObject.getString("thumbnail");
+                //String imageLink = bookInfo.getString("imageLinks");
+                //String imageDisplay = imageLink + book
+                Bitmap bitmap = getBitmapFromURL(imageDisplay);
+                //System.out.println("LOG FOR IMAGES: " + " " + imageDisplay);
+               // Log.d(" LOG QUERY DATA IMAGE: ", imageDisplay);
+
+                //Bitmap bitmap = BitmapFactory.decodeStream(imageDisplay);
+                Books book = new Books(authors, title, bitmap);
                 booksData.add(book);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return booksData;
+    }
+
+    public static Bitmap getBitmapFromURL(String src){
+        try {
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+
+        } catch (Exception e) {
+            // TODO: handle exception
+            e.printStackTrace();
+            return null;
+        }
     }
 }//end of QueryData
